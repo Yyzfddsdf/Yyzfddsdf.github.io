@@ -1,227 +1,42 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Yizhe Yang (杨艺哲), Network Engineering undergraduate at Hangzhou Dianzi University. Interests: embodied AI, multimodal LLMs, and AI safety.">
-  <meta name="color-scheme" content="light">
-  <meta name="theme-color" content="#f6f7f2">
-  <title>Yizhe Yang · 杨艺哲</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%232c4b3e'/%3E%3Ctext x='32' y='43' text-anchor='middle' font-family='serif' font-size='34' fill='%23f6f7f2'%3EY%3C/text%3E%3C/svg%3E">
-  <style>
-    :root{--paper:#f6f7f2;--white:#fff;--ink:#253c32;--muted:#626c63;--line:#d8ded4;--accent:#567353;--light:#e9eee4;--serif:Georgia,"Times New Roman","Noto Serif CJK SC","Songti SC",serif;--sans:Inter,"Helvetica Neue",Arial,"PingFang SC","Microsoft YaHei",sans-serif}
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth;scroll-padding-top:100px}
-    body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
-    button,a{-webkit-tap-highlight-color:transparent}
-    a{color:inherit;text-decoration:none}
-    a:hover{color:var(--accent)}
-    button{font:inherit}
-    button,a{touch-action:manipulation}
-    a:focus-visible,button:focus-visible{outline:3px solid #87a66d;outline-offset:6px;border-radius:4px}
-    .wrap{width:min(1120px,calc(100% - 96px));margin:0 auto}
-    .skip{position:fixed;top:-100px;left:20px;padding:10px 18px;background:var(--ink);color:white;z-index:100}
-    .skip:focus{top:12px}
-    header{border-bottom:1px solid var(--line)}
-    .nav{min-height:96px;display:flex;align-items:center;justify-content:space-between;gap:24px}
-    .brand{display:flex;align-items:center;gap:14px;font-size:14px;font-weight:600;letter-spacing:.03em;white-space:nowrap}
-    .monogram{width:38px;height:38px;background:var(--ink);border-radius:50%;display:grid;place-items:center;color:var(--paper);font-family:var(--serif);font-size:18px;font-weight:400;letter-spacing:-2px;padding-right:2px}
-    .nav-right{display:flex;align-items:center;gap:32px}
-    nav{display:flex;align-items:center;gap:28px;font-size:13px;color:var(--muted)}
-    nav a{padding:10px 0}
-    .language{border:1px solid var(--line);border-radius:24px;background:transparent;min-width:58px;min-height:38px;padding:5px 13px;cursor:pointer;color:var(--ink);font-size:12px;transition:background .18s}
-    .language:hover{background:var(--light)}
-    .hero{padding:78px 0 76px;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(270px,1fr);gap:78px;align-items:center}
-    .eyebrow{font-size:11px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:10px}
-    .eyebrow:before{content:"";width:24px;height:1px;background:currentColor}
-    h1{font-family:var(--serif);font-weight:400;font-size:clamp(54px,6.3vw,78px);letter-spacing:-.048em;line-height:1.1;margin:24px 0 5px}
-    .chinese-name{font-family:var(--serif);font-size:26px;letter-spacing:.16em;color:var(--accent);margin:10px 0 29px;font-weight:400}
-    .hero .intro{max-width:550px;color:var(--muted);font-size:18px;line-height:1.9;margin:0}
-    .hero .intro strong{color:var(--ink);font-weight:500}
-    .hero-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:29px}
-    .button{min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:23px;padding:10px 18px;border:1px solid var(--line);border-radius:5px;font-size:12px;font-weight:500;transition:background .18s,border-color .18s}
-    .button.primary{color:var(--paper);background:var(--ink);border-color:var(--ink)}
-    .button:hover{background:var(--light);border-color:var(--accent);color:var(--ink)}
-    .button.primary:hover{background:#3b5948;color:white}
-    .arrow{width:15px;height:15px;display:inline-block;flex:none}
-    .profile-art{position:relative;aspect-ratio:1/1;max-width:365px;width:100%;justify-self:end;background:#e9eee4;border:1px solid #d9e1d3;overflow:hidden;border-radius:2px}
-    .profile-art svg{display:block;width:100%;height:100%}
-    .art-label{position:absolute;left:22px;right:22px;bottom:17px;display:flex;justify-content:space-between;color:#6e8066;font-size:9px;letter-spacing:.16em;text-transform:uppercase}
-    .art-top{position:absolute;top:20px;left:22px;color:#6e8066;font-size:9px;letter-spacing:.16em;text-transform:uppercase}
-    .about{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:34px 0;display:grid;grid-template-columns:220px 1fr;gap:48px}
-    .section-label{font-size:11px;letter-spacing:.13em;text-transform:uppercase;font-weight:600;margin:4px 0 0;color:var(--accent)}
-    .section-number{font-weight:400;margin-right:14px;color:#8c9985}
-    .about p{font-size:16px;color:var(--muted);margin:0;max-width:770px;line-height:1.9}
-    section[id]{scroll-margin-top:32px}
-    .focus{padding:63px 0 60px}
-    .section-heading{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:30px}
-    h2{font-family:var(--serif);font-size:35px;font-weight:400;letter-spacing:-.025em;line-height:1.2;margin:11px 0 0}
-    .section-aside{font-family:var(--serif);font-style:italic;font-size:15px;color:#7f8c77;margin:0 0 3px}
-    .interests{display:grid;grid-template-columns:repeat(3,1fr);gap:34px}
-    .interest{border-top:1px solid var(--line);padding-top:23px}
-    .interest-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:19px}
-    .interest-index{font-size:10px;color:#84917b;font-variant-numeric:tabular-nums;letter-spacing:.08em}
-    .interest svg{width:28px;height:28px;color:var(--accent)}
-    h3{font-size:17px;line-height:1.45;font-weight:500;margin:0 0 10px}
-    .interest p{font-size:14px;color:var(--muted);margin:0;line-height:1.85}
-    .background{padding:0 0 62px;display:grid;grid-template-columns:1fr 1fr;gap:64px}
-    .background article{padding-top:26px;border-top:1px solid var(--line)}
-    .background h3{font-family:var(--serif);font-size:25px;font-weight:400;margin:15px 0 8px}
-    .background p{font-size:14px;color:var(--muted);margin:0;line-height:1.9}
-    .degree{display:block;font-size:14px;color:var(--muted);margin-bottom:9px}
-    .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
-    .tag{font-size:10px;letter-spacing:.03em;padding:4px 10px;color:#5d7157;background:var(--light);border-radius:3px}
-    .contact{background:var(--ink);color:var(--paper);padding:36px 40px;display:flex;align-items:center;justify-content:space-between;gap:24px;border-radius:5px}
-    .contact .section-label{color:#b5c3ab;font-size:10px}
-    .contact h2{font-size:30px;margin:9px 0 4px}
-    .contact p{font-size:13px;color:#c7d0c2;margin:0}
-    .contact-actions{display:flex;align-items:center;gap:11px}
-    .email-link{font-size:15px;border-bottom:1px solid #7c9176;line-height:1.7;white-space:nowrap}
-    .email-link:hover{color:#d7e8ca;border-color:#d7e8ca}
-    .copy{background:transparent;border:1px solid #63795b;color:var(--paper);border-radius:4px;min-width:42px;min-height:42px;cursor:pointer;display:grid;place-items:center}
-    .copy:hover{background:#3d5541}
-    .copy svg{width:16px;height:16px}
-    .copy-status{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--ink);color:white;border:1px solid #779270;border-radius:5px;padding:11px 18px;font-size:13px;z-index:10;box-shadow:0 4px 24px #0002;max-width:calc(100vw - 32px);text-align:center}
-    .copy-status:empty{display:none}
-    footer{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:27px 0 30px;color:#7b8676;font-size:10px;letter-spacing:.025em}
-    footer a{padding:8px 0}
-    .footer-right{display:flex;align-items:center;gap:18px}
-    .footer-dot{width:3px;height:3px;border-radius:50%;background:#9ca693}
-    html[lang="zh-CN"] h1{letter-spacing:-.025em}
-    html[lang="zh-CN"] .section-label,html[lang="zh-CN"] .eyebrow{letter-spacing:.08em}
-    html[lang="zh-CN"] .hero .intro{line-height:2}
-    @media(min-width:1440px){.hero{padding-top:94px;padding-bottom:94px}.focus{padding-top:70px;padding-bottom:70px}}
-    @media(max-width:900px){.wrap{width:calc(100% - 64px)}.hero{gap:40px;padding:62px 0}.profile-art{max-width:305px}.about{grid-template-columns:155px 1fr;gap:30px}.interests{gap:24px}.background{gap:36px}.nav-right{gap:20px}nav{gap:20px}.contact{padding:30px}.contact h2{font-size:27px}.contact p{max-width:245px}}
-    @media(max-width:680px){.wrap{width:calc(100% - 40px)}.nav{min-height:78px;gap:14px}.brand{font-size:13px;gap:10px}.monogram{width:32px;height:32px;font-size:16px}.nav-right{gap:14px}nav{gap:14px}nav a{font-size:12px}nav a:nth-child(2),nav a:nth-child(3){display:none}.language{min-width:48px;min-height:36px;padding:4px 9px}.hero{grid-template-columns:1fr;gap:32px;padding:44px 0 40px}.hero h1{font-size:58px;margin-top:20px}.chinese-name{font-size:24px;margin-bottom:21px}.hero .intro{font-size:16px;max-width:unset}.profile-art{max-width:unset;aspect-ratio:1.8/1;justify-self:stretch}.profile-art svg{width:100%;height:100%;transform:scale(1.16)}.art-top{top:16px;left:18px}.art-label{left:18px;right:18px;bottom:14px;font-size:8px}.hero-links{margin-top:23px}.about{grid-template-columns:1fr;gap:15px;padding:25px 0}.about p{font-size:15px}.focus{padding:40px 0}.section-heading{margin-bottom:23px}.section-aside{display:none}h2{font-size:31px}.interests{grid-template-columns:1fr;gap:26px}.interest{display:grid;grid-template-columns:36px 1fr;column-gap:17px;padding-top:20px}.interest-top{display:block;grid-row:1 / 3;margin:0}.interest-index{display:block;margin-bottom:11px}.interest svg{width:25px;height:25px}.interest h3{margin-top:0;margin-bottom:5px}.interest p{font-size:14px}.background{grid-template-columns:1fr;gap:30px;padding-bottom:36px}.background article{padding-top:22px}.background h3{font-size:25px}.contact{padding:26px 24px;display:block}.contact h2{font-size:28px}.contact p{max-width:none}.contact-actions{margin-top:22px;justify-content:space-between;gap:14px}.email-link{font-size:16px}.copy{min-width:44px;min-height:44px}footer{padding:23px 0;align-items:flex-start;font-size:10px}.footer-right{gap:10px}.footer-note{max-width:185px}}
-    @media(max-width:360px){.wrap{width:calc(100% - 32px)}.nav-right{gap:11px}.brand{font-size:12px}.hero h1{font-size:52px}nav{display:none}.contact{padding:24px 20px}.email-link{font-size:15px}}
-    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
-    @media print{body{background:#fff;font-size:11px}.wrap{width:100%}.nav{min-height:55px}.language,nav,.copy,.skip,.profile-art,.hero-links,.copy-status{display:none}.hero{display:block;padding:30px 0}.hero h1{font-size:48px}.hero .intro{max-width:100%;font-size:15px}.chinese-name{font-size:20px;margin:6px 0 14px}.about{padding:20px 0;grid-template-columns:150px 1fr}.focus{padding:24px 0}.background{padding-bottom:24px;gap:35px}h2{font-size:26px}.contact{background:transparent;color:var(--ink);border:1px solid var(--line);padding:20px}.contact .section-label,.contact p{color:var(--muted)}.contact h2{font-size:24px}.contact-actions{margin:0}section,article{break-inside:avoid}.tag{border:1px solid var(--line)}footer{padding:20px 0}}
-  </style>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Yizhe Yang (杨艺哲), Network Engineering undergraduate at Hangzhou Dianzi University. Exploring embodied AI, multimodal LLMs, and AI safety.">
+<meta name="theme-color" content="#101c25"><title>Yizhe Yang · 杨艺哲</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%23b3d87b' d='m32 4 28 14-28 14L4 18Z'/%3E%3Cpath fill='%236d874c' d='m4 18 28 14v28L4 46Z'/%3E%3Cpath fill='%23534936' d='m32 32 28-14v28L32 60Z'/%3E%3C/svg%3E">
+<style>
+@font-face{font-family:Silkscreen;src:url('fonts/silkscreen.ttf') format('truetype');font-display:swap}@font-face{font-family:Space;src:url('fonts/space-grotesk.ttf') format('truetype');font-display:swap}
+:root{--bg:#101c25;--surface:#172630;--ink:#f4f0de;--muted:#a6b7bb;--line:#2e4148;--lime:#c3e88d;--gold:#f1c57c;--pixel:Silkscreen,'Courier New',monospace;--sans:Space,Arial,'PingFang SC','Microsoft YaHei',sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:35px;overflow-x:hidden}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 var(--sans);overflow-x:hidden}button,a{touch-action:manipulation;-webkit-tap-highlight-color:transparent}button{font:inherit;cursor:pointer}a{color:inherit;text-decoration:none}a,button{outline-offset:6px}a:focus-visible,button:focus-visible{outline:2px solid var(--lime)}button:disabled{cursor:default}.wrap{width:min(1256px,calc(100% - 112px));margin:auto}.pixel{font-family:var(--pixel)}.skip{position:fixed;left:20px;top:-80px;z-index:100;background:var(--lime);padding:10px 18px;color:#172120}.skip:focus{top:15px}header{position:relative;z-index:10}.nav{height:94px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);gap:22px}.brand{font-family:var(--pixel);font-size:15px;display:flex;align-items:center;gap:15px;white-space:nowrap}.brand svg{width:28px;height:32px;filter:drop-shadow(0 4px 0 #070e1440)}.nav-right,nav{display:flex;align-items:center;gap:30px}nav a{color:var(--muted);font-size:13px;position:relative;padding:8px 0}nav a:hover{color:var(--lime)}nav a:before{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--lime);transition:width .2s}nav a:hover:before{width:100%}.language{border:1px solid #43595d;background:transparent;color:var(--ink);padding:5px 12px;min-height:36px;min-width:53px;font-size:12px;box-shadow:3px 3px 0 #09141c}.language:hover{border-color:var(--lime);color:var(--lime)}
+.hero{position:relative;min-height:710px;display:flex;align-items:center}.hero-copy{position:relative;width:46%;z-index:2;padding:55px 0 91px;pointer-events:none}.hero-copy a{pointer-events:auto}.eyebrow{color:var(--lime);font:10px/1.7 var(--pixel);letter-spacing:.08em;display:flex;align-items:center;gap:10px}.online{width:7px;height:7px;background:var(--lime);box-shadow:0 0 12px #c3e88d55}.hero h1{font:clamp(42px,4.8vw,67px)/1.18 var(--pixel);font-weight:400;letter-spacing:-.055em;margin:23px 0 15px;position:relative;text-shadow:4px 5px 0 #07121a}.hero h1 span{display:block}.name-row{display:flex;align-items:center;gap:17px;margin-bottom:23px}.chinese-name{margin:0;font-size:20px;letter-spacing:.22em;color:var(--gold)}.name-divider{width:30px;height:1px;background:#5b6357}.location{font:10px var(--pixel);color:var(--muted)}.intro{max-width:400px;margin:0;color:var(--muted);font-size:15px;line-height:1.95}.intro strong{color:var(--ink);font-weight:400}.hero-links{display:flex;gap:13px;flex-wrap:wrap;margin-top:29px}.button{display:inline-flex;align-items:center;justify-content:center;gap:22px;min-height:46px;padding:10px 18px;border:1px solid #4a5a59;font:11px var(--pixel);box-shadow:3px 3px 0 #060e14;transition:transform .15s,background .15s;color:var(--ink)}.button:hover{transform:translate(-1px,-2px);background:#21343d}.button.primary{color:#253227;background:var(--lime);border-color:#d8f6ad;box-shadow:3px 3px 0 #69834b}.button.primary:hover{background:#d1efa7}.button svg{width:15px;height:15px}.world-shell{position:absolute;right:-70px;top:-7px;width:72%;height:685px;isolation:isolate}.world-glow{position:absolute;inset:9% 4% 10% 6%;background:radial-gradient(ellipse at 55% 55%,#398d8137,transparent 64%);pointer-events:none}.world-shell:after{content:'';position:absolute;bottom:50px;left:20%;width:68%;height:60px;background:#04121a;filter:blur(28px);opacity:.45;z-index:-1}.world-canvas{display:block;width:100%;height:100%;cursor:grab;outline:none;touch-action:pan-y}.world-canvas.dragging{cursor:grabbing}.world-canvas:focus-visible{outline:1px dashed #90b8a0;outline-offset:-20px}.scene-tag{position:absolute;right:73px;top:39px;font:9px var(--pixel);color:#7d999f;pointer-events:none}.scene-tag span{color:var(--lime)}.scene-caption{position:absolute;bottom:15px;left:32%;right:12%;display:flex;align-items:center;justify-content:center;gap:12px;color:#8ba5aa;font:8px var(--pixel);white-space:nowrap}.scene-caption:before,.scene-caption:after{content:'';width:28px;height:1px;background:#345059}.world-controls{position:absolute;right:2px;bottom:33px;display:flex;gap:8px;z-index:5}.world-control{background:#172932cc;border:1px solid #355058;color:var(--muted);width:35px;height:35px;display:grid;place-items:center;font-size:16px;box-shadow:2px 2px #08141c}.world-control:hover{color:var(--lime);border-color:#7b9c76}.world-control svg{width:15px;height:15px}.hero-bottom{position:absolute;left:0;right:0;bottom:17px;display:flex;align-items:center;justify-content:space-between;font:8px var(--pixel);color:#729094}.scroll-hint{display:flex;gap:13px;align-items:center}.scroll-hint:before{content:'↓';font-size:20px;color:var(--lime)}.coordinates{display:flex;gap:23px;color:#6b868d}.coordinates b{font-weight:400;color:#a8b8b9}.divider{height:1px;background:var(--line)}
+.about{display:grid;grid-template-columns:250px 1fr;gap:62px;padding:42px 0;border-bottom:1px solid var(--line)}.section-label{color:var(--lime);font:10px/1.8 var(--pixel);margin:0;letter-spacing:.02em}.section-number{color:#5c8185;margin-right:14px}.about p{max-width:810px;color:var(--muted);font-size:15px;margin:0;line-height:1.95}.focus{padding:65px 0 55px}.section-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:25px;margin-bottom:26px}h2{font:24px/1.5 var(--pixel);font-weight:400;letter-spacing:-.035em;margin:11px 0 0}.section-aside{color:#7e999f;font-size:12px;margin:0 0 5px}.interests{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.interest{position:relative;padding:28px 27px 27px;background:linear-gradient(145deg,#1b3039,#14242e);border:1px solid #31464e;box-shadow:4px 4px 0 #0a151c;transition:transform .2s,border-color .2s}.interest:hover{transform:translateY(-5px);border-color:#7e9976}.interest:after{content:'';position:absolute;width:5px;height:5px;right:12px;top:12px;background:#435d61}.interest-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}.interest-index{font:9px var(--pixel);color:#6c8a92}.item-icon{width:40px;height:40px;image-rendering:pixelated}.interest h3{font-size:19px;font-weight:500;line-height:1.5;margin:0 0 9px}.interest p{color:var(--muted);font-size:13px;line-height:1.9;margin:0}.background{display:grid;grid-template-columns:1fr 1fr;gap:55px;padding:8px 0 61px}.background article{border-top:1px solid var(--line);padding-top:26px}.background h3{font-size:21px;font-weight:500;margin:17px 0 6px}.background p,.degree{color:var(--muted);font-size:14px;line-height:1.9}.background p{margin:0}.tags{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}.tag{font:9px var(--pixel);color:#a5c5b8;background:#1e333c;border:1px solid #355058;padding:7px 9px}.contact{position:relative;overflow:hidden;border:1px solid #56644a;background:linear-gradient(115deg,#25392f,#1d302f);padding:37px 38px;display:flex;align-items:center;justify-content:space-between;gap:20px;box-shadow:4px 4px 0 #0a151c}.contact:after{content:'';width:130px;height:130px;position:absolute;right:-40px;top:-72px;transform:rotate(45deg);border:22px solid #94b96812;pointer-events:none}.contact .section-label{color:#a9cb86}.contact h2{font-size:25px;margin:9px 0}.contact p{color:#a8bbad;font-size:13px;margin:0}.contact-actions{display:flex;align-items:center;gap:16px}.email-link{color:#d9edbb;font-size:17px;border-bottom:1px solid #73896b}.email-link:hover{color:white}.copy{width:40px;height:40px;display:grid;place-items:center;background:#162a24;border:1px solid #627a53;color:#c3dfab;flex-shrink:0}.copy:hover{background:#2c4937}.copy svg{width:16px;height:16px}footer{display:flex;justify-content:space-between;align-items:center;padding:29px 0;color:#728d91;font-size:11px;gap:20px}.footer-right{display:flex;align-items:center;gap:18px}.footer-right a:hover{color:var(--lime)}.footer-dot{width:3px;height:3px;background:#53747b}.copy-status{position:fixed;left:50%;transform:translateX(-50%);bottom:24px;z-index:100;color:var(--lime);background:#182c25;border:1px solid #7e9c66;box-shadow:4px 4px #07131b;padding:10px 18px;max-width:calc(100vw - 32px);font-size:13px;text-align:center}.copy-status:empty{display:none}.fallback{position:absolute;inset:25%;text-align:center;color:var(--muted);font-size:14px;display:none}.world-shell.failed .fallback{display:block}.reveal{opacity:1}body.day{--bg:#dce8de;--surface:#d3e1d5;--ink:#243b35;--muted:#536e64;--line:#b5c9b8;--lime:#507337;--gold:#855e32}body.day .hero h1{text-shadow:4px 5px 0 #bfd1bf}body.day .interest{background:linear-gradient(145deg,#e7eee2,#cfdfd2);border-color:#aec3b2;box-shadow:4px 4px #b0c6b6}body.day .button{box-shadow:3px 3px #adc2b2;color:#294233}body.day .button.primary{background:#365d43;color:#eff5e5;border-color:#547654;box-shadow:3px 3px #a7bc9f}body.day .contact{color:#f4f0de}body.day .tag{color:#3d6550;background:#cbded0;border-color:#afc7b5}body.day .world-shell:after{background:#2b5245;opacity:.17}body.day .scene-tag,body.day .scene-caption{color:#597f72}body.day .world-control{background:#d0e1d2;color:#355544;border-color:#97b29f}body.day .language{box-shadow:3px 3px #b3c7b6}body.day .world-glow{background:radial-gradient(ellipse,#a5cfb744,transparent 67%)}
+@media(min-width:1600px){.hero{min-height:790px}.world-shell{width:74%;height:760px;right:-100px}.hero h1{font-size:72px}}
+@media(max-width:1100px){.wrap{width:calc(100% - 72px)}.hero{min-height:640px}.world-shell{right:-75px;width:76%;height:610px;top:12px}.hero-copy{width:46%;padding-bottom:90px}.hero h1{font-size:49px}.intro{font-size:14px}.nav-right,nav{gap:22px}.about{grid-template-columns:190px 1fr;gap:35px}.scene-tag{right:80px}.interests{gap:15px}.interest{padding:24px 20px}.contact{padding:31px}.contact h2{font-size:21px}.email-link{font-size:15px}}
+@media(max-width:760px){.wrap{width:calc(100% - 40px)}.nav{height:77px}.brand{font-size:12px;gap:10px}.brand svg{width:25px}.nav-right{gap:15px}nav{gap:15px}nav a{font-size:12px}nav a:nth-child(2),nav a:nth-child(3){display:none}.language{min-width:46px;min-height:34px;padding:4px 9px}.hero{display:block;min-height:985px}.hero-copy{width:100%;padding:44px 0 0;max-width:500px}.hero h1{font-size:49px;margin:21px 0 13px;line-height:1.15}.hero h1 span{display:inline}.hero h1 span+span{margin-left:14px}.name-row{margin-bottom:17px}.chinese-name{font-size:18px}.location{font-size:9px}.intro{max-width:460px;font-size:14px;line-height:1.9}.hero-links{margin-top:24px}.button{font-size:10px;min-height:44px;padding:10px 16px}.eyebrow{font-size:9px}.world-shell{top:364px;right:-35px;width:calc(100% + 70px);height:548px}.scene-tag{top:20px;right:56px;font-size:8px}.scene-caption{bottom:12px;left:10%;right:10%;font-size:7px}.world-controls{bottom:25px;right:1px}.hero-bottom{bottom:13px;font-size:7px}.coordinates{gap:10px}.about{grid-template-columns:1fr;gap:18px;padding:29px 0}.about p{font-size:14px}.section-label{font-size:9px}.focus{padding:42px 0}.section-heading{margin-bottom:23px}h2{font-size:20px}.section-aside{display:none}.interests{grid-template-columns:1fr;gap:18px}.interest{padding:23px 22px;display:grid;grid-template-columns:47px 1fr;column-gap:22px}.interest-top{display:flex;flex-direction:column;gap:14px;grid-row:1/3;margin:0;justify-content:start}.interest-index{order:2;font-size:8px}.item-icon{width:36px;height:36px}.interest h3{font-size:18px;margin:0 0 6px}.interest p{font-size:13px}.background{grid-template-columns:1fr;gap:29px;padding:0 0 36px}.background article{padding-top:23px}.background h3{font-size:20px}.contact{display:block;padding:27px 24px}.contact h2{font-size:21px}.contact-actions{margin-top:25px;justify-content:space-between}.email-link{font-size:16px}footer{align-items:flex-start;font-size:10px;padding:26px 0}.footer-note{max-width:190px}.footer-right{gap:11px}}
+@media(max-width:410px){.hero h1{font-size:40px}.hero h1 span+span{margin-left:8px}.hero{min-height:958px}.world-shell{top:385px;height:500px}.coordinates{display:none}nav a:first-child{display:none}.hero-copy{padding-top:36px}.name-row{gap:12px}.location{font-size:8px}.button{gap:14px}.contact h2{font-size:19px}.email-link{font-size:15px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}}
+@media print{body{background:white;color:#222}.wrap{width:100%}.world-shell,.world-controls,.language,nav,.hero-bottom,.copy,.skip{display:none}.hero{min-height:0;display:block}.hero-copy{width:100%;padding:30px 0}.hero h1{font-size:40px;text-shadow:none}.hero h1 span{display:inline}.intro{max-width:none}.interest,.contact{background:white;color:#222;box-shadow:none;border:1px solid #bbb}.about,.focus,.background{padding:25px 0}.contact{display:block}.contact-actions{margin-top:15px}.hero-links{display:none}section,article{break-inside:avoid}}
+</style>
 </head>
 <body>
-  <a class="skip" href="#main" data-i18n="skip">Skip to content</a>
-  <header>
-    <div class="wrap nav">
-      <a class="brand" href="#" aria-label="Yizhe Yang, home"><span class="monogram" aria-hidden="true">YY</span><span>YIZHE YANG</span></a>
-      <div class="nav-right">
-        <nav aria-label="Main navigation"><a href="#about" data-i18n="navAbout">About</a><a href="#interests" data-i18n="navFocus">Interests</a><a href="#background" data-i18n="navBackground">Background</a><a href="#contact" data-i18n="navContact">Contact</a></nav>
-        <button class="language" type="button" id="language" aria-label="Switch to Chinese" aria-pressed="false">中文</button>
-      </div>
-    </div>
-  </header>
-  <main id="main" class="wrap">
-    <section class="hero" aria-labelledby="name">
-      <div>
-        <div class="eyebrow" data-i18n="eyebrow">Academic profile</div>
-        <h1 id="name">Yizhe Yang</h1>
-        <p class="chinese-name" lang="zh-CN">杨艺哲</p>
-        <p class="intro" data-i18n="hero">An undergraduate in <strong>Network Engineering</strong> at <strong>Hangzhou Dianzi University</strong>, with interests in embodied AI, multimodal LLMs, and AI safety.</p>
-        <div class="hero-links">
-          <a class="button primary" href="mailto:2915176064@qq.com"><span data-i18n="getInTouch">Get in touch</span><svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M4 12 12 4M4 4h8v8"/></svg></a>
-          <a class="button" href="https://github.com/Yyzfddsdf" target="_blank" rel="noopener noreferrer"><span>GitHub</span><svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M4 12 12 4M4 4h8v8"/></svg></a>
-        </div>
-      </div>
-      <div class="profile-art" aria-hidden="true">
-        <span class="art-top">Perception · Intelligence · Trust</span>
-        <svg viewBox="0 0 365 365" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <defs><pattern id="grid" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M 24 0 L 0 0 0 24" stroke="#cbd6c3" stroke-width=".45"/></pattern><linearGradient id="orb" x1="85" y1="65" x2="278" y2="296" gradientUnits="userSpaceOnUse"><stop stop-color="#e4ebdb"/><stop offset="1" stop-color="#b2c2a4"/></linearGradient><clipPath id="circle"><circle cx="182.5" cy="179" r="100"/></clipPath></defs>
-          <rect width="365" height="365" fill="url(#grid)"/>
-          <path d="M 25 179 H 340 M 182.5 37 V 321" stroke="#91a782" stroke-width=".6" stroke-dasharray="2 5"/>
-          <circle cx="182.5" cy="179" r="128" stroke="#b1c1a5" stroke-width=".7"/>
-          <circle cx="182.5" cy="179" r="113" stroke="#b1c1a5" stroke-width=".5"/>
-          <circle cx="182.5" cy="179" r="100" fill="url(#orb)" stroke="#7f9672" stroke-width=".7"/>
-          <g clip-path="url(#circle)" stroke="#789169" stroke-width=".65" opacity=".75">
-            <ellipse cx="182.5" cy="179" rx="72" ry="100"/><ellipse cx="182.5" cy="179" rx="34" ry="100"/><ellipse cx="182.5" cy="179" rx="100" ry="31"/><ellipse cx="182.5" cy="179" rx="100" ry="67"/>
-            <path d="M82 179H283 M182.5 79V279"/>
-          </g>
-          <circle cx="182.5" cy="179" r="48" fill="#e8eddf" stroke="#718964" stroke-width=".7"/>
-          <text x="182.5" y="195" text-anchor="middle" font-family="Georgia,serif" font-size="43" letter-spacing="-4" fill="#3e5b36">YY</text>
-          <circle cx="277.2" cy="92.9" r="5" fill="#45603c" stroke="#e9eee4" stroke-width="3"/>
-          <circle cx="81.5" cy="257.5" r="5" fill="#45603c" stroke="#e9eee4" stroke-width="3"/>
-          <circle cx="182.5" cy="51" r="3" fill="#8ca17c"/>
-          <path d="M30 57V49H38 M335 301V309H327" stroke="#7f9672" stroke-width="1"/>
-        </svg>
-        <div class="art-label"><span>Yang, Yizhe</span><span>Personal homepage</span></div>
-      </div>
-    </section>
-    <section class="about" id="about" aria-labelledby="about-heading">
-      <h2 class="section-label" id="about-heading"><span class="section-number">01</span><span data-i18n="aboutLabel">About me</span></h2>
-      <p data-i18n="about">I am an undergraduate student at Hangzhou Dianzi University, majoring in Network Engineering. My research interests include embodied AI, multimodal large language models, and AI safety. My technical experience includes NSA sparse attention optimization on MetaX C500 using TileLang.</p>
-    </section>
-    <section class="focus" id="interests" aria-labelledby="interests-heading">
-      <div class="section-heading"><div><div class="section-label"><span class="section-number">02</span><span data-i18n="focusLabel">Research interests</span></div><h2 id="interests-heading" data-i18n="focusHeading">Areas of interest</h2></div><p class="section-aside" data-i18n="focusAside">Perception, intelligence, and trust.</p></div>
-      <div class="interests">
-        <article class="interest">
-          <div class="interest-top"><span class="interest-index">I.</span><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.15" aria-hidden="true"><rect x="7" y="6" width="14" height="14" rx="5"/><path d="M14 2v4M7 13H3m22 0h-4M10 20v5m8-5v5"/><circle cx="11" cy="12" r="1"/><circle cx="17" cy="12" r="1"/><path d="M11 16h6"/></svg></div>
-          <h3 data-i18n="embodiedTitle">Embodied AI</h3><p data-i18n="embodiedText">Intelligent agents that connect perception and action in the physical world.</p>
-        </article>
-        <article class="interest">
-          <div class="interest-top"><span class="interest-index">II.</span><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.15" aria-hidden="true"><rect x="3" y="4" width="16" height="15" rx="3"/><rect x="9" y="10" width="16" height="14" rx="3" fill="#f6f7f2"/><path d="m12 20 4-5 3 3 3-3"/><circle cx="8" cy="9" r="1.3"/></svg></div>
-          <h3 data-i18n="multimodalTitle">Multimodal LLMs</h3><p data-i18n="multimodalText">Models that bring language together with visual and other forms of information.</p>
-        </article>
-        <article class="interest">
-          <div class="interest-top"><span class="interest-index">III.</span><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.15" aria-hidden="true"><path d="m14 3 9 4v7c0 5-5 9-9 11-4-2-9-6-9-11V7l9-4Z"/><path d="m10 14 3 3 6-7"/></svg></div>
-          <h3 data-i18n="safetyTitle">AI Safety</h3><p data-i18n="safetyText">Understanding risks and improving the reliability and safety of AI systems.</p>
-        </article>
-      </div>
-    </section>
-    <section class="background" id="background" aria-label="Education and technical background">
-      <article>
-        <div class="section-label"><span class="section-number">03</span><span data-i18n="educationLabel">Education</span></div>
-        <h3 data-i18n="university">Hangzhou Dianzi University</h3>
-        <span class="degree" data-i18n="degree">Undergraduate · Network Engineering</span>
-      </article>
-      <article>
-        <div class="section-label"><span class="section-number">04</span><span data-i18n="technicalLabel">Technical background</span></div>
-        <h3 data-i18n="technicalTitle">Attention &amp; optimization</h3>
-        <p data-i18n="technicalText">Experience with NSA sparse attention optimization on MetaX C500 using TileLang.</p>
-        <div class="tags" aria-label="Technologies"><span class="tag">NSA</span><span class="tag">MetaX C500</span><span class="tag">TileLang</span></div>
-      </article>
-    </section>
-    <section class="contact" id="contact" aria-labelledby="contact-heading">
-      <div><div class="section-label" data-i18n="contactLabel">Contact</div><h2 id="contact-heading" data-i18n="contactHeading">Let’s connect.</h2><p data-i18n="contactText">You can reach me by email or find me on GitHub.</p></div>
-      <div class="contact-actions"><a class="email-link" href="mailto:2915176064@qq.com">2915176064@qq.com</a><button type="button" class="copy" id="copy-email" aria-label="Copy email address"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><rect x="7" y="7" width="10" height="11" rx="1.7"/><path d="M12 7V3.7A1.7 1.7 0 0 0 10.3 2H3.7A1.7 1.7 0 0 0 2 3.7v7.6A1.7 1.7 0 0 0 3.7 13H7"/></svg></button></div>
-    </section>
-  </main>
-  <footer class="wrap"><span class="footer-note" data-i18n="footer">Yizhe Yang · Hangzhou Dianzi University</span><div class="footer-right"><a href="https://github.com/Yyzfddsdf" target="_blank" rel="noopener noreferrer">GitHub</a><span class="footer-dot" aria-hidden="true"></span><a href="#" data-i18n="backTop">Back to top</a></div></footer>
-  <div class="copy-status" role="status" aria-live="polite" id="copy-status"></div>
-  <script>
-    (function(){
-      'use strict';
-      var translations={
-        en:{skip:'Skip to content',navAbout:'About',navFocus:'Interests',navBackground:'Background',navContact:'Contact',eyebrow:'Academic profile',hero:'An undergraduate in <strong>Network Engineering</strong> at <strong>Hangzhou Dianzi University</strong>, with interests in embodied AI, multimodal LLMs, and AI safety.',getInTouch:'Get in touch',aboutLabel:'About me',about:'I am an undergraduate student at Hangzhou Dianzi University, majoring in Network Engineering. My research interests include embodied AI, multimodal large language models, and AI safety. My technical experience includes NSA sparse attention optimization on MetaX C500 using TileLang.',focusLabel:'Research interests',focusHeading:'Areas of interest',focusAside:'Perception, intelligence, and trust.',embodiedTitle:'Embodied AI',embodiedText:'Intelligent agents that connect perception and action in the physical world.',multimodalTitle:'Multimodal LLMs',multimodalText:'Models that bring language together with visual and other forms of information.',safetyTitle:'AI Safety',safetyText:'Understanding risks and improving the reliability and safety of AI systems.',educationLabel:'Education',university:'Hangzhou Dianzi University',degree:'Undergraduate · Network Engineering',technicalLabel:'Technical background',technicalTitle:'Attention & optimization',technicalText:'Experience with NSA sparse attention optimization on MetaX C500 using TileLang.',contactLabel:'Contact',contactHeading:'Let’s connect.',contactText:'You can reach me by email or find me on GitHub.',footer:'Yizhe Yang · Hangzhou Dianzi University',backTop:'Back to top'},
-        zh:{skip:'跳转到正文',navAbout:'关于',navFocus:'研究兴趣',navBackground:'个人背景',navContact:'联系',eyebrow:'个人学术主页',hero:'我是<strong>杭州电子科技大学网络工程专业</strong>的本科生，研究兴趣包括具身智能、多模态大语言模型与人工智能安全。',getInTouch:'联系我',aboutLabel:'关于我',about:'我是杨艺哲，杭州电子科技大学网络工程专业本科生。我关注具身智能、多模态大语言模型与人工智能安全，技术经历包括使用 TileLang 在 MetaX C500 上开展 NSA 稀疏注意力优化。',focusLabel:'研究兴趣',focusHeading:'我关注的方向',focusAside:'感知、智能与可信。',embodiedTitle:'具身智能',embodiedText:'将感知与行动相结合，在物理世界中进行交互的智能体。',multimodalTitle:'多模态大语言模型',multimodalText:'结合语言、视觉及其他模态信息的模型。',safetyTitle:'人工智能安全',safetyText:'理解人工智能系统的风险，提升其可靠性与安全性。',educationLabel:'教育背景',university:'杭州电子科技大学',degree:'本科生 · 网络工程',technicalLabel:'技术背景',technicalTitle:'注意力机制与优化',technicalText:'使用 TileLang 在 MetaX C500 上进行 NSA 稀疏注意力优化的实践经历。',contactLabel:'联系方式',contactHeading:'保持联系。',contactText:'可以通过电子邮件或 GitHub 找到我。',footer:'杨艺哲 · 杭州电子科技大学',backTop:'返回顶部'}
-      };
-      var current='en';
-      var languageButton=document.getElementById('language');
-      var status=document.getElementById('copy-status');
-      var timer;
-      languageButton.addEventListener('click',function(){
-        current=current==='en'?'zh':'en';
-        document.documentElement.lang=current==='zh'?'zh-CN':'en';
-        document.querySelectorAll('[data-i18n]').forEach(function(node){var key=node.getAttribute('data-i18n');if(key==='hero'){node.innerHTML=translations[current][key];}else{node.textContent=translations[current][key];}});
-        languageButton.textContent=current==='zh'?'EN':'中文';
-        languageButton.setAttribute('aria-label',current==='zh'?'Switch to English':'Switch to Chinese');
-        languageButton.setAttribute('aria-pressed',String(current==='zh'));
-        document.getElementById('copy-email').setAttribute('aria-label',current==='zh'?'复制邮箱地址':'Copy email address');
-        document.querySelector('nav').setAttribute('aria-label',current==='zh'?'主导航':'Main navigation');
-        document.getElementById('background').setAttribute('aria-label',current==='zh'?'教育与技术背景':'Education and technical background');
-        document.title=current==='zh'?'杨艺哲 · Yizhe Yang':'Yizhe Yang · 杨艺哲';
-        clearTimeout(timer);status.textContent='';
-      });
-      document.getElementById('copy-email').addEventListener('click',async function(){
-        var success=false;
-        var input=document.createElement('textarea');input.value='2915176064@qq.com';input.style.position='fixed';input.style.left='-9999px';input.setAttribute('aria-hidden','true');document.body.appendChild(input);input.select();
-        try{success=document.execCommand('copy');}catch(e){}
-        document.body.removeChild(input);document.getElementById('copy-email').focus({preventScroll:true});
-        if(!success&&navigator.clipboard&&window.isSecureContext){
-          try{await Promise.race([navigator.clipboard.writeText('2915176064@qq.com'),new Promise(function(resolve,reject){setTimeout(function(){reject(new Error('Clipboard unavailable'));},1200);})]);success=true;}catch(e){}
-        }
-        clearTimeout(timer);
-        status.textContent=success?(current==='zh'?'邮箱地址已复制':'Email address copied'):(current==='zh'?'请选中邮箱地址后复制':'Select the email address to copy it');
-        timer=setTimeout(function(){status.textContent='';},3500);
-      });
-    })();
-  </script>
-</body>
-</html>
+<a class="skip" href="#main" data-i18n="skip">Skip to content</a>
+<header><div class="wrap nav"><a class="brand" href="#" aria-label="Yizhe Yang, home"><svg viewBox="0 0 32 36" aria-hidden="true"><path fill="#c3e88d" d="m16 0 16 8-16 8L0 8Z"/><path fill="#789957" d="m0 8 16 8v18L0 26Z"/><path fill="#526a43" d="m16 16 16-8v18L16 34Z"/><path fill="#879b64" d="m0 13 7 3v5l9 4v9L0 26Z"/><path fill="#74634c" d="m16 25 9-4v-5l7-3v13L16 34Z"/></svg><span>YIZHE.Y</span></a><div class="nav-right"><nav aria-label="Main navigation"><a href="#about" data-i18n="navAbout">About</a><a href="#interests" data-i18n="navFocus">Interests</a><a href="#background" data-i18n="navBackground">Background</a><a href="#contact" data-i18n="navContact">Contact</a></nav><button class="language" id="language" type="button" aria-label="Switch to Chinese" aria-pressed="false">中文</button></div></div></header>
+<main id="main" class="wrap">
+<section class="hero" aria-labelledby="name"><div class="hero-copy"><div class="eyebrow"><i class="online" aria-hidden="true"></i><span data-i18n="eyebrow">A small world. Endless curiosity.</span></div><h1 id="name"><span>YIZHE</span><span>YANG</span></h1><div class="name-row"><p class="chinese-name" lang="zh-CN">杨艺哲</p><span class="name-divider" aria-hidden="true"></span><span class="location">HANGZHOU, CN</span></div><p class="intro" data-i18n="hero">An undergraduate in <strong>Network Engineering</strong> at <strong>Hangzhou Dianzi University</strong>, with interests in embodied AI, multimodal LLMs, and AI safety.</p><div class="hero-links"><a class="button primary" href="mailto:2915176064@qq.com"><span data-i18n="getInTouch">Get in touch</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a><a class="button" href="https://github.com/Yyzfddsdf" target="_blank" rel="noopener noreferrer"><span>GitHub</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 12 12 4M4 4h8v8"/></svg></a></div></div>
+<div class="world-shell" id="world-shell"><div class="world-glow"></div><canvas class="world-canvas" id="world" tabindex="0" role="img" aria-label="Interactive 3D voxel island with a tree, cabin, glowing torches, pond and bedrock. Drag or use left and right arrow keys to rotate."></canvas><div class="scene-tag">OVERWORLD <span> / </span> 001</div><div class="scene-caption" data-i18n="worldHint">Drag to explore this little world</div><div class="fallback" data-i18n="fallback">This little 3D world needs WebGL. All profile information is available below.</div></div>
+<div class="world-controls"><button id="theme" class="world-control" aria-label="Switch to daylight" title="Switch to daylight" aria-pressed="false"><svg id="sun-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M10 1v3m0 12v3M1 10h3m12 0h3M4 4l2 2m8 8 2 2M4 16l2-2M14 6l2-2"/><rect x="7" y="7" width="6" height="6"/></svg></button><button id="motion" class="world-control" aria-label="Pause animation" title="Pause animation" aria-pressed="false"><svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path id="motion-path" d="M5 4h3v12H5zm7 0h3v12h-3z"/></svg></button><button id="reset-view" class="world-control" aria-label="Reset island view" title="Reset island view"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M4 8a6 6 0 1 1 0 5M4 3v5h5"/></svg></button></div><div class="hero-bottom"><a class="scroll-hint" href="#about" data-i18n="scrollHint">Scroll to discover</a><span class="coordinates"><span>X <b>120.15</b></span><span>Y <b>30.27</b></span><span>BIOME <b>HANGZHOU</b></span></span></div></section>
+<div class="divider"></div>
+<section class="about" id="about" aria-labelledby="about-heading"><h2 class="section-label" id="about-heading"><span class="section-number">01</span><span data-i18n="aboutLabel">About me</span></h2><p data-i18n="about">I am an undergraduate student at Hangzhou Dianzi University, majoring in Network Engineering. My research interests include embodied AI, multimodal large language models, and AI safety. My technical experience includes NSA sparse attention optimization on MetaX C500 using TileLang.</p></section>
+<section class="focus" id="interests" aria-labelledby="interests-heading"><div class="section-heading"><div><div class="section-label"><span class="section-number">02</span><span data-i18n="focusLabel">Research interests</span></div><h2 id="interests-heading" data-i18n="focusHeading">Ideas worth exploring.</h2></div><p class="section-aside" data-i18n="focusAside">Perception, intelligence, and trust.</p></div><div class="interests">
+<article class="interest"><div class="interest-top"><canvas class="item-icon" id="icon-robot" width="20" height="20" aria-hidden="true"></canvas><span class="interest-index">ITEM 01</span></div><h3 data-i18n="embodiedTitle">Embodied AI</h3><p data-i18n="embodiedText">Intelligent agents that connect perception and action in the physical world.</p></article>
+<article class="interest"><div class="interest-top"><canvas class="item-icon" id="icon-gem" width="20" height="20" aria-hidden="true"></canvas><span class="interest-index">ITEM 02</span></div><h3 data-i18n="multimodalTitle">Multimodal LLMs</h3><p data-i18n="multimodalText">Models that bring language together with visual and other forms of information.</p></article>
+<article class="interest"><div class="interest-top"><canvas class="item-icon" id="icon-shield" width="20" height="20" aria-hidden="true"></canvas><span class="interest-index">ITEM 03</span></div><h3 data-i18n="safetyTitle">AI Safety</h3><p data-i18n="safetyText">Understanding risks and improving the reliability and safety of AI systems.</p></article>
+</div></section>
+<section class="background" id="background" aria-label="Education and technical background"><article><div class="section-label"><span class="section-number">03</span><span data-i18n="educationLabel">Education</span></div><h3 data-i18n="university">Hangzhou Dianzi University</h3><span class="degree" data-i18n="degree">Undergraduate · Network Engineering</span></article><article><div class="section-label"><span class="section-number">04</span><span data-i18n="technicalLabel">Technical background</span></div><h3 data-i18n="technicalTitle">Attention &amp; optimization</h3><p data-i18n="technicalText">Experience with NSA sparse attention optimization on MetaX C500 using TileLang.</p><div class="tags" aria-label="Technologies"><span class="tag">NSA</span><span class="tag">MetaX C500</span><span class="tag">TileLang</span></div></article></section>
+<section class="contact" id="contact" aria-labelledby="contact-heading"><div><div class="section-label" data-i18n="contactLabel">Open a conversation</div><h2 id="contact-heading" data-i18n="contactHeading">Let’s connect.</h2><p data-i18n="contactText">You can reach me by email or find me on GitHub.</p></div><div class="contact-actions"><a class="email-link" href="mailto:2915176064@qq.com">2915176064@qq.com</a><button type="button" class="copy" id="copy-email" aria-label="Copy email address"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M7 7h10v11H7zM12 7V2H2v11h5"/></svg></button></div></section>
+</main><footer class="wrap"><span class="footer-note" data-i18n="footer">Yizhe Yang · Hangzhou Dianzi University</span><div class="footer-right"><a href="https://github.com/Yyzfddsdf" target="_blank" rel="noopener noreferrer">GitHub</a><span class="footer-dot" aria-hidden="true"></span><a href="#" data-i18n="backTop">Back to top ↑</a></div></footer><div class="copy-status" id="copy-status" role="status" aria-live="polite"></div>
+<script src="vendor/three.min.js"></script>
+<script src="world.js"></script>
+<script src="profile.js"></script>
+</body></html>
