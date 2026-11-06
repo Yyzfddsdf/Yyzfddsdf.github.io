@@ -45,6 +45,22 @@ render(scene,camera){
  };
  scene.traverseVisible(mesh=>{if(!mesh.isMesh)return;if(mesh.isInstancedMesh){for(let i=0;i<mesh.count;i++){mesh.getMatrixAt(i,im);matrix.multiplyMatrices(mesh.matrixWorld,im);add(mesh,matrix);}}else add(mesh,mesh.matrixWorld);});
  surfaces.sort((a,b)=>b.z-a.z);
+ // Conservative screen-tile occlusion skips fully hidden voxel faces before texture work.
+ // Tile depths use the projected face plane; transparent water never hides geometry.
+ if(camera.isPerspectiveCamera){
+  const tile=28,cols=Math.ceil(this.w/tile),rows=Math.ceil(this.h/tile),depth=new Float64Array(cols*rows);depth.fill(Infinity);
+  const inside=(x,y,points)=>{let sign=0;for(let i=0;i<points.length;i++){const a=points[i],b=points[(i+1)%points.length],cross=(b.x-a.x)*(y-a.y)-(b.y-a.y)*(x-a.x);if(Math.abs(cross)<.001)continue;const s=Math.sign(cross);if(sign&&s!==sign)return false;sign=s;}return true;};
+  for(let k=surfaces.length-1;k>=0;k--){
+   const s=surfaces[k],p=s.pts,a=p[0],b=p[1],c=p[2],den=(b.x-a.x)*(c.y-a.y)-(c.x-a.x)*(b.y-a.y);if(Math.abs(den)<.001)continue;
+   const A=((b.z-a.z)*(c.y-a.y)-(c.z-a.z)*(b.y-a.y))/den,B=((b.x-a.x)*(c.z-a.z)-(c.x-a.x)*(b.z-a.z))/den,C=a.z-A*a.x-B*a.y;
+   const x0=Math.max(0,Math.floor(Math.min(...p.map(q=>q.x))/tile)),x1=Math.min(cols-1,Math.floor(Math.max(...p.map(q=>q.x))/tile)),y0=Math.max(0,Math.floor(Math.min(...p.map(q=>q.y))/tile)),y1=Math.min(rows-1,Math.floor(Math.max(...p.map(q=>q.y))/tile));
+   let hidden=true;
+   for(let y=y0;y<=y1&&hidden;y++)for(let x=x0;x<=x1;x++){const l=x*tile,r=Math.min(this.w,l+tile),t=y*tile,bottom=Math.min(this.h,t+tile),near=A*(A>0?l:r)+B*(B>0?t:bottom)+C;if(near<=depth[y*cols+x]+.000001){hidden=false;break;}}
+   if(hidden){s.occluded=true;continue;}
+   if(s.mat.opacity<.99)continue;
+   for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++){const l=x*tile,r=Math.min(this.w,l+tile),t=y*tile,bottom=Math.min(this.h,t+tile);if(!inside(l,t,p)||!inside(r,t,p)||!inside(r,bottom,p)||!inside(l,bottom,p))continue;const far=A*(A>0?r:l)+B*(B>0?bottom:t)+C;depth[y*cols+x]=Math.min(depth[y*cols+x],far);}
+  }
+ }
  ctx.setTransform(this.ratio,0,0,this.ratio,0,0);ctx.clearRect(0,0,this.w,this.h);ctx.imageSmoothingEnabled=false;
  let triangles=0;
  const shade=(light,opacity)=>{if(light.shade<1){ctx.globalAlpha=(1-light.shade)*opacity;ctx.fillStyle='#071a22';ctx.fill();}if(light.warm){ctx.globalAlpha=light.warm*opacity;ctx.fillStyle='#ffb35f';ctx.fill();}};
@@ -57,7 +73,8 @@ render(scene,camera){
   ctx.save();ctx.globalAlpha=opacity;ctx.beginPath();ctx.moveTo(edge[0].x,edge[0].y);ctx.lineTo(edge[1].x,edge[1].y);ctx.lineTo(edge[2].x,edge[2].y);ctx.closePath();ctx.clip();
   ctx.transform(tx[0],ty[0],tx[1],ty[1],tx[2],ty[2]);ctx.drawImage(img,0,0);ctx.setTransform(this.ratio,0,0,this.ratio,0,0);shade(light,opacity);ctx.restore();triangles++;
  };
- for(const s of surfaces){
+ for(const s of surfaces){  
+  if(s.occluded)continue;
   const m=s.mat,img=m.map&&m.map.image;
   if(img&&camera.isPerspectiveCamera){
    const span=Math.max(...s.pts.map(p=>p.x))-Math.min(...s.pts.map(p=>p.x)),height=Math.max(...s.pts.map(p=>p.y))-Math.min(...s.pts.map(p=>p.y)),steps=m.opacity<1?1:Math.min(3,Math.max(1,Math.ceil(Math.max(span,height)/240)));
