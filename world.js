@@ -45,6 +45,7 @@ render(scene,camera){
  };
  scene.traverseVisible(mesh=>{if(!mesh.isMesh)return;if(mesh.isInstancedMesh){for(let i=0;i<mesh.count;i++){mesh.getMatrixAt(i,im);matrix.multiplyMatrices(mesh.matrixWorld,im);add(mesh,matrix);}}else add(mesh,mesh.matrixWorld);});
  surfaces.sort((a,b)=>b.z-a.z);
+ if(camera.isPerspectiveCamera){this.renderPerspective(surfaces,camera);return;}
  // Conservative screen-tile occlusion skips fully hidden voxel faces before texture work.
  // Tile depths use the projected face plane; transparent water never hides geometry.
  if(camera.isPerspectiveCamera){
@@ -86,6 +87,44 @@ render(scene,camera){
   }
  }
  this.info.render.calls=surfaces.length;this.info.render.triangles=triangles;
+}
+renderPerspective(surfaces,camera){
+ // Pixel-art depth buffer: correct occlusion and perspective, without thousands of canvas transforms.
+ const scale=Math.min(1,Math.sqrt(180000/(this.w*this.h))),width=Math.max(1,Math.round(this.w*scale)),height=Math.max(1,Math.round(this.h*scale));
+ if(!this.rasterCanvas){this.rasterCanvas=document.createElement('canvas');this.rasterContext=this.rasterCanvas.getContext('2d');}
+ if(this.rasterCanvas.width!==width||this.rasterCanvas.height!==height||!this.pixels){this.rasterCanvas.width=width;this.rasterCanvas.height=height;this.pixels=this.rasterContext.createImageData(width,height);this.depth=new Float32Array(width*height);}
+ const rgba=this.pixels.data,depth=this.depth;rgba.fill(0);depth.fill(2);
+ const pe=camera.projectionMatrix.elements;
+ const point=v=>{const p=v.p,q=1/(-p.z),x=(pe[0]*p.x+pe[8]*p.z)*q,y=(pe[5]*p.y+pe[9]*p.z)*q,z=(pe[10]*p.z+pe[14])*q;return{x:(x+1)*width*.5,y:(1-y)*height*.5,z,q,u:v.u*q,v:v.v*q};};
+ let triangles=0,faces=0;
+ const paint=s=>{
+  const m=s.mat,opacity=m.opacity,opaque=opacity>=.99;let tex=null,tw=1,th=1;
+  if(m.map&&m.map.image){const image=m.map.image;if(!m.map.userData.rasterPixels)m.map.userData.rasterPixels=image.getContext('2d').getImageData(0,0,image.width,image.height).data;tex=m.map.userData.rasterPixels;tw=image.width;th=image.height;}
+  const color=m.color.clone().convertLinearToSRGB(),baseR=color.r*255,baseG=color.g*255,baseB=color.b*255,shade=s.light.shade,warm=s.light.warm,mul=shade*(1-warm),plusR=7*(1-shade)*(1-warm)+255*warm,plusG=26*(1-shade)*(1-warm)+179*warm,plusB=34*(1-shade)*(1-warm)+95*warm;
+  const p=s.vertices.map(point);faces++;
+  for(let j=1;j<p.length-1;j++){
+   const a=p[0],b=p[j],c=p[j+1],den=(b.y-c.y)*(a.x-c.x)+(c.x-b.x)*(a.y-c.y);if(Math.abs(den)<.00001)continue;triangles++;
+   const x0=Math.max(0,Math.floor(Math.min(a.x,b.x,c.x))),x1=Math.min(width-1,Math.ceil(Math.max(a.x,b.x,c.x))),y0=Math.max(0,Math.floor(Math.min(a.y,b.y,c.y))),y1=Math.min(height-1,Math.ceil(Math.max(a.y,b.y,c.y)));
+   const ax=(b.y-c.y)/den,ay=(c.x-b.x)/den,bx=(c.y-a.y)/den,by=(a.x-c.x)/den;
+   for(let y=y0;y<=y1;y++){
+    let wa=ax*(x0+.5-c.x)+ay*(y+.5-c.y),wb=bx*(x0+.5-c.x)+by*(y+.5-c.y),index=y*width+x0;
+    for(let x=x0;x<=x1;x++,index++,wa+=ax,wb+=bx){
+     const wc=1-wa-wb;if(wa<-.000001||wb<-.000001||wc<-.000001)continue;
+     const z=wa*a.z+wb*b.z+wc*c.z;if(z>depth[index]+.0000001||z<-1||z>1)continue;
+     let red=baseR,green=baseG,blue=baseB;
+     if(tex){const q=wa*a.q+wb*b.q+wc*c.q,u=(wa*a.u+wb*b.u+wc*c.u)/q,v=(wa*a.v+wb*b.v+wc*c.v)/q,tx=Math.max(0,Math.min(tw-1,Math.floor(u*tw))),ty=Math.max(0,Math.min(th-1,Math.floor(v*th))),ti=(ty*tw+tx)*4;red=tex[ti]*color.r;green=tex[ti+1]*color.g;blue=tex[ti+2]*color.b;}
+     red=red*mul+plusR;green=green*mul+plusG;blue=blue*mul+plusB;
+     const at=index*4;
+     if(opaque){rgba[at]=red;rgba[at+1]=green;rgba[at+2]=blue;rgba[at+3]=255;depth[index]=z;}
+     else{const oldA=rgba[at+3]/255,outA=opacity+oldA*(1-opacity),oldWeight=oldA*(1-opacity);rgba[at]=(red*opacity+rgba[at]*oldWeight)/outA;rgba[at+1]=(green*opacity+rgba[at+1]*oldWeight)/outA;rgba[at+2]=(blue*opacity+rgba[at+2]*oldWeight)/outA;rgba[at+3]=outA*255;}
+    }
+   }
+  }
+ };
+ for(let i=surfaces.length-1;i>=0;i--)if(surfaces[i].mat.opacity>=.99)paint(surfaces[i]);
+ for(const s of surfaces)if(s.mat.opacity<.99)paint(s);
+ this.rasterContext.putImageData(this.pixels,0,0);const ctx=this.ctx;ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,canvas.width,canvas.height);ctx.imageSmoothingEnabled=false;ctx.drawImage(this.rasterCanvas,0,0,canvas.width,canvas.height);
+ this.info.render.calls=faces;this.info.render.triangles=triangles;
 }
 }
 let renderer;
