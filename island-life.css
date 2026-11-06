@@ -10,7 +10,7 @@
 .enter-island:hover{text-decoration:underline}
 body.day .resident-card,body.day .resident-pin{background:#e8efe2ef;color:#2d4c3d;border-color:#7d9b81;box-shadow:3px 3px #a5bfa788}
 body.day .resident-kicker,body.day .resident-activity{color:#496e54}body.day .enter-island{color:#345d3d!important}
-body.island-exploring{overflow:hidden}
+html.island-exploring{overflow:hidden!important;overscroll-behavior:none}body.island-exploring{overflow:hidden;position:fixed;top:var(--island-scroll,0px);width:100%;overscroll-behavior:none}
 body.island-exploring .world-shell.exploring{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;max-width:none!important;z-index:1000;background:radial-gradient(ellipse at 50% 55%,#344d50 0,#142b35 65%,#0b1923 100%);isolation:isolate}
 body.day.island-exploring .world-shell.exploring{background:linear-gradient(#9ec5ce,#d7e3cc 80%,#acc4b5)}
 .world-shell.exploring:after,.world-shell.exploring .scene-caption,.world-shell.exploring .scene-tag,.world-shell.exploring .world-glow{display:none}

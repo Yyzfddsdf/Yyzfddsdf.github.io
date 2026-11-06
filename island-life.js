@@ -119,7 +119,7 @@ window.createIslandLife=function (api) {
     $('.move-pad').setAttribute('aria-label',tr('Movement controls','移动控制'));
     for(const [i,b]of Array.from(overlay.querySelectorAll('[data-move]')).entries())b.setAttribute('aria-label',zh()?['前进','向左','后退','向右'][i]:['Move forward','Move left','Move backward','Move right'][i]);
     $('.close-landmark').setAttribute('aria-label',tr('Close description','关闭介绍'));
-    if(active){shell.setAttribute('aria-label',tr('Explore the floating island','探索小空岛'));updateHUD();}
+    if(active){shell.setAttribute('aria-label',tr('Explore the floating island','探索小空岛'));canvas.setAttribute('aria-label',tr('First person. WASD to move, drag to look, Escape to exit.','第一人称。WASD 移动，拖动环顾，Escape 退出。'));updateHUD();}
   }
   function updateHUD(){
     const inside=player.x>.15&&player.x<3&&player.z<-.15&&player.z>-2.7;
@@ -141,7 +141,7 @@ window.createIslandLife=function (api) {
     player.x=npc.x;player.z=npc.z;if(!safe(player.x,player.z)){player.x=1.75;player.z=2.5;}
     yaw=Math.atan2(player.x-1.6,player.z+1.3);pitch=0;
     active=true;resident.visible=false;pin.hidden=true;card.hidden=true;hud.hidden=false;info.hidden=true;
-    shell.classList.add('exploring');document.body.classList.add('island-exploring');
+    shell.classList.add('exploring');document.body.style.setProperty('--island-scroll',(-oldScroll)+'px');document.documentElement.classList.add('island-exploring');document.body.classList.add('island-exploring');
     shell.setAttribute('role','dialog');shell.setAttribute('aria-modal','true');
     const hero=shell.parentElement,main=hero.parentElement;
     for(const n of[...hero.children,...main.children,document.querySelector('header'),document.querySelector('footer')]){
@@ -153,7 +153,7 @@ window.createIslandLife=function (api) {
   function exit(){
     if(!active)return;active=false;clearInput();resident.visible=true;pin.hidden=false;card.hidden=false;hud.hidden=true;info.hidden=true;
     npc.x=player.x;npc.z=player.z;resident.position.set(npc.x,floor(npc.x,npc.z),npc.z);choose();
-    shell.classList.remove('exploring');document.body.classList.remove('island-exploring');shell.removeAttribute('role');shell.removeAttribute('aria-modal');shell.removeAttribute('aria-label');canvas.setAttribute('role','img');
+    shell.classList.remove('exploring');document.body.classList.remove('island-exploring');document.documentElement.classList.remove('island-exploring');document.body.style.removeProperty('--island-scroll');shell.removeAttribute('role');shell.removeAttribute('aria-modal');shell.removeAttribute('aria-label');canvas.setAttribute('role','img');
     canvas.setAttribute('aria-label',tr('Interactive voxel island. Drag to rotate; click the resident to explore.','交互式体素空岛。拖动旋转，点击小人进入探索。'));
     for(const[n,value]of inertNodes)n.inert=value;inertNodes.length=0;api.onResize();window.scrollTo(0,oldScroll);
     if(previousFocus&&previousFocus.isConnected)previousFocus.focus({preventScroll:true});

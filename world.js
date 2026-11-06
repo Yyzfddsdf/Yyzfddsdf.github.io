@@ -6,21 +6,69 @@ const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 let islandLife=null;
 let paused=reduced.matches,day=false,dragging=false,hoverX=0,hoverY=0,angle=.76,targetAngle=.76,tilt=.58,targetTilt=.58,lastX=0,lastY=0,clock=0,lastTime=0,visible=true;
 const themeButton=document.getElementById('theme'),motionButton=document.getElementById('motion');
-function labels(){if(islandLife)islandLife.labels();const zh=document.documentElement.lang==='zh-CN';themeButton.setAttribute('aria-label',zh?(day?'切换到夜晚':'切换到白天'):(day?'Switch to night':'Switch to daylight'));themeButton.title=themeButton.getAttribute('aria-label');themeButton.setAttribute('aria-pressed',String(day));motionButton.setAttribute('aria-label',zh?(paused?'播放动画':'暂停动画'):(paused?'Play animation':'Pause animation'));motionButton.title=motionButton.getAttribute('aria-label');motionButton.setAttribute('aria-pressed',String(paused));document.getElementById('motion-path').setAttribute('d',paused?'M5 3l12 7-12 7z':'M5 4h3v12H5zm7 0h3v12h-3z');document.getElementById('reset-view').setAttribute('aria-label',zh?'重置岛屿视角':'Reset island view');canvas.setAttribute('aria-label',zh?'交互式三维体素岛屿，包含树木、小屋、发光火把、水池和基岩。拖动或使用左右方向键旋转。':'Interactive 3D voxel island with a tree, cabin, glowing torches, pond and bedrock. Drag or use left and right arrow keys to rotate.');}
+function labels(){const zh=document.documentElement.lang==='zh-CN';themeButton.setAttribute('aria-label',zh?(day?'切换到夜晚':'切换到白天'):(day?'Switch to night':'Switch to daylight'));themeButton.title=themeButton.getAttribute('aria-label');themeButton.setAttribute('aria-pressed',String(day));motionButton.setAttribute('aria-label',zh?(paused?'播放动画':'暂停动画'):(paused?'Play animation':'Pause animation'));motionButton.title=motionButton.getAttribute('aria-label');motionButton.setAttribute('aria-pressed',String(paused));document.getElementById('motion-path').setAttribute('d',paused?'M5 3l12 7-12 7z':'M5 4h3v12H5zm7 0h3v12h-3z');document.getElementById('reset-view').setAttribute('aria-label',zh?'重置岛屿视角':'Reset island view');canvas.setAttribute('aria-label',zh?'交互式三维体素岛屿，包含树木、小屋、发光火把、水池和基岩。拖动或使用左右方向键旋转。':'Interactive 3D voxel island with a tree, cabin, glowing torches, pond and bedrock. Drag or use left and right arrow keys to rotate.');if(islandLife)islandLife.labels();}
 labels();window.addEventListener('languagechange',labels);
 function icons(){const draw=(id,fn)=>{const c=document.getElementById(id).getContext('2d');c.imageSmoothingEnabled=false;const r=(x,y,w,h,color)=>{c.fillStyle=color;c.fillRect(x,y,w,h)};fn(r)};draw('icon-robot',r=>{r(9,1,2,3,'#e1c275');r(4,4,12,11,'#79967b');r(5,5,10,8,'#c6db9d');r(1,7,3,5,'#496e66');r(16,7,3,5,'#496e66');r(6,7,2,3,'#203b3d');r(12,7,2,3,'#203b3d');r(8,12,4,1,'#79967b');r(5,15,3,4,'#8ba58b');r(12,15,3,4,'#8ba58b')});draw('icon-gem',r=>{r(6,1,8,2,'#91e8df');r(3,3,14,2,'#70cbd2');r(1,5,18,5,'#43a3b4');r(3,10,14,2,'#32829c');r(5,12,10,2,'#2b647f');r(7,14,6,2,'#28556c');r(9,16,2,2,'#28556c');r(6,5,3,5,'#8ee6dc');r(9,3,2,2,'#d3fff0');r(9,10,2,4,'#4cb4bd');r(14,5,3,5,'#2f829e')});draw('icon-shield',r=>{r(3,2,14,10,'#e9bb6a');r(5,12,10,3,'#bb8d47');r(7,15,6,2,'#bb8d47');r(9,17,2,2,'#8e7141');r(5,4,10,7,'#506c5e');r(7,11,6,3,'#506c5e');r(9,14,2,2,'#506c5e');r(7,7,2,2,'#c9dfa3');r(9,9,2,2,'#c9dfa3');r(11,7,2,2,'#c9dfa3');r(13,5,2,2,'#c9dfa3')});}
 icons();
 if(!window.THREE){shell.classList.add('failed');return;}
 // A true 3D software renderer keeps the world interactive on browsers without WebGL.
 class VoxelSoftwareRenderer {
-constructor(){this.software=true;this.shadowMap={};this.info={render:{calls:0,triangles:0}};this.ctx=canvas.getContext('2d');this.ratio=1;this.frames=0;this.faces=[[[1,0,0],[ [.5,.5,.5],[.5,.5,-.5],[.5,-.5,-.5],[.5,-.5,.5] ]],[[-1,0,0],[[-.5,.5,-.5],[-.5,.5,.5],[-.5,-.5,.5],[-.5,-.5,-.5]]],[[0,1,0],[[-.5,.5,-.5],[.5,.5,-.5],[.5,.5,.5],[-.5,.5,.5]]],[[0,-1,0],[[-.5,-.5,.5],[.5,-.5,.5],[.5,-.5,-.5],[-.5,-.5,-.5]]],[[0,0,1],[[-.5,.5,.5],[.5,.5,.5],[.5,-.5,.5],[-.5,-.5,.5]]],[[0,0,-1],[[.5,.5,-.5],[-.5,.5,-.5],[-.5,-.5,-.5],[.5,-.5,-.5]]]];}
+constructor(){this.software=true;this.shadowMap={};this.info={render:{calls:0,triangles:0}};this.ctx=canvas.getContext('2d');this.ratio=1;this.faces=[
+[[1,0,0],[[.5,.5,.5],[.5,.5,-.5],[.5,-.5,-.5],[.5,-.5,.5]]],
+[[-1,0,0],[[-.5,.5,-.5],[-.5,.5,.5],[-.5,-.5,.5],[-.5,-.5,-.5]]],
+[[0,1,0],[[-.5,.5,-.5],[.5,.5,-.5],[.5,.5,.5],[-.5,.5,.5]]],
+[[0,-1,0],[[-.5,-.5,.5],[.5,-.5,.5],[.5,-.5,-.5],[-.5,-.5,-.5]]],
+[[0,0,1],[[-.5,.5,.5],[.5,.5,.5],[.5,-.5,.5],[-.5,-.5,.5]]],
+[[0,0,-1],[[.5,.5,-.5],[-.5,.5,-.5],[-.5,-.5,-.5],[.5,-.5,-.5]]]
+];}
 setPixelRatio(r){this.ratio=Math.min(r,1.35);}
 setSize(w,h){this.w=w;this.h=h;canvas.width=Math.round(w*this.ratio);canvas.height=Math.round(h*this.ratio);}
-render(scene,camera){if(!this.ctx)return;scene.updateMatrixWorld(true);camera.updateMatrixWorld(true);const ctx=this.ctx,view=new THREE.Matrix4().multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse),eye=camera.position.clone().sub(new THREE.Vector3(0,1,0)).normalize(),light=new THREE.Vector3(-.4,.85,.5).normalize(),surfaces=[],positions=this.faces;const pv=new THREE.Vector3(),n=new THREE.Vector3(),center=new THREE.Vector3(),im=new THREE.Matrix4(),combined=new THREE.Matrix4();
-const add=(mesh,matrix)=>{center.set(0,0,0).applyMatrix4(matrix);for(let f=0;f<6;f++){n.fromArray(positions[f][0]).transformDirection(matrix);if(camera.isPerspectiveCamera)eye.copy(camera.position).sub(center).normalize();if(n.dot(eye)<.001)continue;const mat=Array.isArray(mesh.material)?mesh.material[f]:mesh.material;if(!mat||mat.visible===false||mat.opacity<.015)continue;let vertices=positions[f][1].map(p=>new THREE.Vector3().fromArray(p).applyMatrix4(matrix).applyMatrix4(camera.matrixWorldInverse));
-if(camera.isPerspectiveCamera){const clipped=[];const near=-camera.near-.001;for(let i=0;i<vertices.length;i++){const a=vertices[i],b=vertices[(i+1)%vertices.length],ai=a.z<=near,bi=b.z<=near;if(ai)clipped.push(a);if(ai!==bi)clipped.push(a.clone().lerp(b,(near-a.z)/(b.z-a.z)));}vertices=clipped;if(vertices.length<3)continue;}
-const pts=vertices.map(p=>{pv.copy(p).applyMatrix4(camera.projectionMatrix);return [(pv.x+1)*this.w/2,(1-pv.y)*this.h/2,pv.z]});if(pts.every(p=>p[0]<-20)||pts.every(p=>p[0]>this.w+20)||pts.every(p=>p[1]<-20)||pts.every(p=>p[1]>this.h+20))continue;const area=Math.abs((pts[1][0]-pts[0][0])*(pts[2][1]-pts[0][1])-(pts[1][1]-pts[0][1])*(pts[2][0]-pts[0][0]));if(area<.1)continue;surfaces.push({pts,z:pts.reduce((a,p)=>a+p[2],0)/4,mat,shade:mat.isMeshBasicMaterial?1:.61+Math.max(0,n.dot(light))*.39});}};
-scene.traverseVisible(mesh=>{if(!mesh.isMesh||!mesh.visible)return;if(mesh.isInstancedMesh){for(let i=0;i<mesh.count;i++){mesh.getMatrixAt(i,im);combined.multiplyMatrices(mesh.matrixWorld,im);add(mesh,combined);}}else add(mesh,mesh.matrixWorld);});surfaces.sort((a,b)=>b.z-a.z);ctx.setTransform(this.ratio,0,0,this.ratio,0,0);ctx.clearRect(0,0,this.w,this.h);ctx.imageSmoothingEnabled=false;for(const s of surfaces){const p=s.pts,m=s.mat;ctx.save();ctx.globalAlpha=m.opacity;ctx.beginPath();ctx.moveTo(p[0][0],p[0][1]);for(let i=1;i<p.length;i++)ctx.lineTo(p[i][0],p[i][1]);ctx.closePath();ctx.clip();if(m.map&&m.map.image&&!camera.isPerspectiveCamera){const img=m.map.image;ctx.transform((p[1][0]-p[0][0])/img.width,(p[1][1]-p[0][1])/img.width,(p[3][0]-p[0][0])/img.height,(p[3][1]-p[0][1])/img.height,p[0][0],p[0][1]);ctx.drawImage(img,0,0);if(s.shade<1){ctx.globalAlpha=(1-s.shade)*m.opacity;ctx.fillStyle='#071a22';ctx.fillRect(0,0,img.width,img.height);}}else{if(m.map&&m.map.image){if(!m.userData.softwareColor){const c=m.map.image.getContext('2d').getImageData(8,8,1,1).data;m.userData.softwareColor='rgb('+c[0]+','+c[1]+','+c[2]+')';}ctx.fillStyle=m.userData.softwareColor;}else ctx.fillStyle=m.color.getStyle();ctx.fill();if(s.shade<1){ctx.globalAlpha=(1-s.shade)*m.opacity;ctx.fillStyle='#071a22';ctx.fill();}}ctx.restore();}this.info.render.calls=surfaces.length;this.info.render.triangles=surfaces.length*2;}
+render(scene,camera){
+ if(!this.ctx)return;
+ scene.updateMatrixWorld(true);camera.updateMatrixWorld(true);
+ const ctx=this.ctx,surfaces=[],lights=[],sunDir=new THREE.Vector3(-.4,.85,.5).normalize(),im=new THREE.Matrix4(),matrix=new THREE.Matrix4();
+ scene.traverseVisible(m=>{if(m.isPointLight){lights.push({p:m.getWorldPosition(new THREE.Vector3()),intensity:m.intensity,distance:m.distance||5});}});
+ const project=v=>{const p=v.clone().applyMatrix4(camera.projectionMatrix);return {x:(p.x+1)*this.w/2,y:(1-p.y)*this.h/2,z:p.z};};
+ const clip=vertices=>{const out=[],near=-camera.near-.002;for(let i=0;i<vertices.length;i++){const a=vertices[i],b=vertices[(i+1)%vertices.length],ai=a.p.z<=near,bi=b.p.z<=near;if(ai)out.push(a);if(ai!==bi){const t=(near-a.p.z)/(b.p.z-a.p.z);out.push({p:a.p.clone().lerp(b.p,t),u:a.u+(b.u-a.u)*t,v:a.v+(b.v-a.v)*t});}}return out;};
+ const shadowed=(p,min,max)=>{let lo=.025,hi=30;for(const a of['x','y','z']){let x=(min[a]-p[a])/sunDir[a],y=(max[a]-p[a])/sunDir[a];if(x>y)[x,y]=[y,x];lo=Math.max(lo,x);hi=Math.min(hi,y);if(hi<lo)return false;}return true;};
+ const lighting=(p,n,mat)=>{if(mat.isMeshBasicMaterial)return {shade:1,warm:0};const roof=p.y<2.66&&shadowed(p,{x:-.58,y:2.72,z:-3.38},{x:3.8,y:4.8,z:.28});const tree=p.y<3.65&&shadowed(p,{x:-5.2,y:3.65,z:-3.35},{x:-1.6,y:5.8,z:.16});let shade=(day?.54:.34)+Math.max(0,n.dot(sunDir))*(day?.46:.40)*(roof?.14:tree?.3:1);let warm=0;for(const l of lights){const delta=l.p.clone().sub(p),d=delta.length();if(d>l.distance)continue;const strength=Math.pow(Math.max(0,1-d/l.distance),2)*l.intensity*.22*Math.max(.12,n.dot(delta.normalize()));shade+=strength;warm+=strength*.25;}if(mat.emissive&&mat.emissive.getHex())shade=Math.max(shade,.92);return {shade:Math.min(1,shade),warm:Math.min(.22,warm)};};
+ const add=(mesh,mat4)=>{
+  for(let f=0;f<6;f++){
+   const mat=Array.isArray(mesh.material)?mesh.material[f]:mesh.material;if(!mat||mat.visible===false||mat.opacity<.015)continue;
+   const n=new THREE.Vector3().fromArray(this.faces[f][0]).transformDirection(mat4),wc=this.faces[f][1].map(p=>new THREE.Vector3().fromArray(p).applyMatrix4(mat4)),center=wc.reduce((a,p)=>a.add(p),new THREE.Vector3()).multiplyScalar(.25);
+   const toward=camera.isPerspectiveCamera?camera.position.clone().sub(center).normalize():camera.position.clone().sub(new THREE.Vector3(0,1,0)).normalize();if(n.dot(toward)<.001)continue;
+   const vc=wc.map(p=>p.clone().applyMatrix4(camera.matrixWorldInverse)),vertices=clip(vc.map((p,i)=>({p,u:i===1||i===2?1:0,v:i>=2?1:0})));if(vertices.length<3)continue;
+   const pts=vertices.map(v=>project(v.p));if(pts.every(p=>p.x<0)||pts.every(p=>p.x>this.w)||pts.every(p=>p.y<0)||pts.every(p=>p.y>this.h)||pts.every(p=>p.z>1))continue;
+   let area=0;for(let i=0;i<pts.length;i++){const a=pts[i],b=pts[(i+1)%pts.length];area+=a.x*b.y-b.x*a.y;}if(Math.abs(area)<.2)continue;
+   surfaces.push({mat,n,wc,vc,vertices,pts,center,z:pts.reduce((a,p)=>a+p.z,0)/pts.length,light:lighting(center,n,mat)});
+  }
+ };
+ scene.traverseVisible(mesh=>{if(!mesh.isMesh)return;if(mesh.isInstancedMesh){for(let i=0;i<mesh.count;i++){mesh.getMatrixAt(i,im);matrix.multiplyMatrices(mesh.matrixWorld,im);add(mesh,matrix);}}else add(mesh,mesh.matrixWorld);});
+ surfaces.sort((a,b)=>b.z-a.z);
+ ctx.setTransform(this.ratio,0,0,this.ratio,0,0);ctx.clearRect(0,0,this.w,this.h);ctx.imageSmoothingEnabled=false;
+ let triangles=0;
+ const shade=(light,opacity)=>{if(light.shade<1){ctx.globalAlpha=(1-light.shade)*opacity;ctx.fillStyle='#071a22';ctx.fill();}if(light.warm){ctx.globalAlpha=light.warm*opacity;ctx.fillStyle='#ffb35f';ctx.fill();}};
+ const triangle=(verts,img,light,opacity)=>{const p=verts.map(v=>project(v.p));if(p.every(q=>q.x<0)||p.every(q=>q.x>this.w)||p.every(q=>q.y<0)||p.every(q=>q.y>this.h))return;
+  const a=verts[0],b=verts[1],c=verts[2],x0=a.u*img.width,y0=a.v*img.height,x1=b.u*img.width,y1=b.v*img.height,x2=c.u*img.width,y2=c.v*img.height;
+  const den=x0*(y1-y2)+x1*(y2-y0)+x2*(y0-y1);if(Math.abs(den)<.000001)return;
+  const calc=(q0,q1,q2)=>[(q0*(y1-y2)+q1*(y2-y0)+q2*(y0-y1))/den,(q0*(x2-x1)+q1*(x0-x2)+q2*(x1-x0))/den,(q0*(x1*y2-x2*y1)+q1*(x2*y0-x0*y2)+q2*(x0*y1-x1*y0))/den];
+  const tx=calc(p[0].x,p[1].x,p[2].x),ty=calc(p[0].y,p[1].y,p[2].y);
+  ctx.save();ctx.globalAlpha=opacity;ctx.beginPath();ctx.moveTo(p[0].x,p[0].y);ctx.lineTo(p[1].x,p[1].y);ctx.lineTo(p[2].x,p[2].y);ctx.closePath();ctx.clip();
+  ctx.transform(tx[0],ty[0],tx[1],ty[1],tx[2],ty[2]);ctx.drawImage(img,0,0);ctx.setTransform(this.ratio,0,0,this.ratio,0,0);shade(light,opacity);ctx.restore();triangles++;
+ };
+ for(const s of surfaces){
+  const m=s.mat,img=m.map&&m.map.image;
+  if(img&&camera.isPerspectiveCamera){
+   const span=Math.max(...s.pts.map(p=>p.x))-Math.min(...s.pts.map(p=>p.x)),height=Math.max(...s.pts.map(p=>p.y))-Math.min(...s.pts.map(p=>p.y)),steps=Math.min(7,Math.max(1,Math.ceil(Math.max(span,height)/110)));
+   const at=(u,v)=>({p:s.vc[0].clone().addScaledVector(s.vc[1].clone().sub(s.vc[0]),u).addScaledVector(s.vc[3].clone().sub(s.vc[0]),v),u,v});
+   for(let y=0;y<steps;y++)for(let x=0;x<steps;x++){const cell=[at(x/steps,y/steps),at((x+1)/steps,y/steps),at((x+1)/steps,(y+1)/steps),at(x/steps,(y+1)/steps)],poly=clip(cell);if(poly.length<3)continue;const midpoint=s.wc[0].clone().addScaledVector(s.wc[1].clone().sub(s.wc[0]),(x+.5)/steps).addScaledVector(s.wc[3].clone().sub(s.wc[0]),(y+.5)/steps),light=lighting(midpoint,s.n,m);for(let i=1;i<poly.length-1;i++)triangle([poly[0],poly[i],poly[i+1]],img,light,m.opacity);}
+  }else{
+   const p=s.pts;ctx.save();ctx.globalAlpha=m.opacity;ctx.beginPath();ctx.moveTo(p[0].x,p[0].y);for(let i=1;i<p.length;i++)ctx.lineTo(p[i].x,p[i].y);ctx.closePath();ctx.clip();
+   if(img&&p.length===4){ctx.transform((p[1].x-p[0].x)/img.width,(p[1].y-p[0].y)/img.width,(p[3].x-p[0].x)/img.height,(p[3].y-p[0].y)/img.height,p[0].x,p[0].y);ctx.drawImage(img,0,0);ctx.setTransform(this.ratio,0,0,this.ratio,0,0);}else{ctx.fillStyle=m.color.getStyle();ctx.fill();}shade(s.light,m.opacity);ctx.restore();triangles+=p.length-2;
+  }
+ }
+ this.info.render.calls=surfaces.length;this.info.render.triangles=triangles;
+}
 }
 let renderer;
 try{const gl=canvas.getContext('webgl2',{alpha:true,antialias:true})||canvas.getContext('webgl',{alpha:true,antialias:true});if(!gl)throw new Error('WebGL unavailable');renderer=new THREE.WebGLRenderer({canvas,context:gl,alpha:true,antialias:true,powerPreference:'low-power'});}catch(e){renderer=new VoxelSoftwareRenderer();shell.dataset.renderer='software';}
