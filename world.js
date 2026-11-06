@@ -62,7 +62,7 @@ for(const x of[-.12,3.32])for(const z of[-2.97,-.13])block('log',x,1.85,z,.4,2.5
 // The open door rests against the inside wall, leaving the entry passable.
 const dark=new THREE.MeshStandardMaterial({color:0x26382e,roughness:1});const lampMat=new THREE.MeshStandardMaterial({color:0xffd678,emissive:0xffaf37,emissiveIntensity:1.15});
 function meshBox(mat,x,y,z,sx,sy,sz,parent=world){const m=new THREE.Mesh(cube,mat);m.position.set(x,y,z);m.scale.set(sx,sy,sz);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m;}
-meshBox(materials.wood,.97,1.55,-.70,.1,1.65,.9);meshBox(lampMat,1.04,1.5,-1.02,.07,.09,.09);
+meshBox(materials.wood,.49,1.55,-.37,.9,1.65,.1);meshBox(lampMat,.18,1.5,-.44,.09,.09,.07);
 function windowFront(x,z){meshBox(dark,x,2,z,1.0,.96,.12);meshBox(lampMat,x,2,z+.08,.78,.73,.07);block('wood',x,2,z+.14,.09,.9,.08);block('wood',x,2,z+.14,.9,.09,.08);}
 windowFront(.58,-.09);windowFront(2.65,-.09);
 meshBox(dark,3.29,2,houseZ,.13,1,1.2);meshBox(lampMat,3.37,2,houseZ,.08,.75,.98);block('wood',3.43,2,houseZ,.08,.88,.09);block('wood',3.43,2,houseZ,.08,.09,1.1);

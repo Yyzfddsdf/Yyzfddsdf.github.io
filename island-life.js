@@ -54,7 +54,7 @@ window.createIslandLife=function (api) {
   add(gold,2.75,1.34,2.85,.33,.035,.025,world);
   const obstacles=[
     [.04,-1.55,.18,2.7],[3.16,-1.55,.18,2.7],[1.6,-2.86,3.3,.18],
-    [.48,-.24,.88,.18],[2.72,-.24,.88,.18],[.97,-.70,.1,.9],
+    [.48,-.24,.88,.18],[2.72,-.24,.88,.18],
     [.57,-2.03,.74,1.4],[2.68,-2.24,.86,.9],[-3.4,-1.6,.85,.85],
     [4.15,2.2,.22,2.6],[2.95,1.06,.9,.72],[-1.5,-2.75,1.15,.45],[2.75,2.8,.12,.12],
     [0,1.2,.18,.18],[3.6,2.9,.18,.18],[-4.3,2.4,.18,.18],
@@ -66,13 +66,15 @@ window.createIslandLife=function (api) {
   function move(p,dx,dz){const steps=Math.max(1,Math.ceil(Math.hypot(dx,dz)/.08));for(let i=0;i<steps;i++){if(safe(p.x+dx/steps,p.z))p.x+=dx/steps;if(safe(p.x,p.z+dz/steps))p.z+=dz/steps;}}
   // A small A* grid routes around the pond, walls, furniture, and the island edge.
   function pathTo(from,to){
-    const step=.25,key=(x,z)=>x+','+z,start=[Math.round(from.x/step),Math.round(from.z/step)],goal=[Math.round(to.x/step),Math.round(to.z/step)];
+    const step=.25,key=(x,z)=>x+','+z,goal=[Math.round(to.x/step),Math.round(to.z/step)];
+    const candidates=[];for(let dx=-2;dx<=2;dx++)for(let dz=-2;dz<=2;dz++){const x=Math.round(from.x/step)+dx,z=Math.round(from.z/step)+dz,d=Math.hypot(x*step-from.x,z*step-from.z);if(!safe(x*step,z*step))continue;let clear=true;const samples=Math.max(1,Math.ceil(d/.06));for(let i=1;i<=samples;i++)if(!safe(from.x+(x*step-from.x)*i/samples,from.z+(z*step-from.z)*i/samples)){clear=false;break;}if(clear)candidates.push({x,z,d});}
+    candidates.sort((a,b)=>a.d-b.d);if(!candidates.length)return [];const start=[candidates[0].x,candidates[0].z];
     if(!safe(goal[0]*step,goal[1]*step))return [];
     const open=[{x:start[0],z:start[1],g:0,f:0}],scores=new Map([[key(...start),0]]),parents=new Map(),closed=new Set();
     for(let count=0;open.length&&count<4000;count++){
       let best=0;for(let i=1;i<open.length;i++)if(open[i].f<open[best].f)best=i;
       const n=open.splice(best,1)[0],nk=key(n.x,n.z);if(closed.has(nk))continue;closed.add(nk);
-      if(n.x===goal[0]&&n.z===goal[1]){const route=[];let k=nk;while(k!==key(...start)){const [x,z]=k.split(',').map(Number);route.unshift({x:x*step,z:z*step});k=parents.get(k);if(!k)return [];}route.push(to);return route;}
+      if(n.x===goal[0]&&n.z===goal[1]){const route=[];let k=nk;while(k!==key(...start)){const [x,z]=k.split(',').map(Number);route.unshift({x:x*step,z:z*step});k=parents.get(k);if(!k)return [];}route.unshift({x:start[0]*step,z:start[1]*step});route.push(to);return route;}
       for(const [dx,dz]of[[1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,1],[1,-1],[-1,-1]]){
         const x=n.x+dx,z=n.z+dz,k=key(x,z),g=n.g+Math.hypot(dx,dz);
         if(Math.abs(x)>22||Math.abs(z)>18||closed.has(k)||!safe(x*step,z*step))continue;
@@ -184,7 +186,7 @@ window.createIslandLife=function (api) {
     if(e.code==='Escape'){e.preventDefault();if(!info.hidden)info.hidden=true;else exit();return;}
     if(e.code==='KeyE'){e.preventDefault();if(!e.repeat)inspect();return;}
     if(['KeyW','KeyA','KeyS','KeyD','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','ShiftLeft','ShiftRight'].includes(e.code)){e.preventDefault();e.stopImmediatePropagation();keys.add(e.code);}
-    if(e.key==='Tab'){const list=[canvas,...Array.from(hud.querySelectorAll('button')).filter(b=>!b.disabled&&!b.closest('[hidden]'))];const i=list.indexOf(document.activeElement);if(e.shiftKey&&i<=0){e.preventDefault();list.at(-1).focus();}else if(!e.shiftKey&&(i===list.length-1||i<0)){e.preventDefault();list[0].focus();}}
+    if(e.key==='Tab'){const list=[canvas,...Array.from(hud.querySelectorAll('button')).filter(b=>!b.disabled&&b.getClientRects().length>0&&!b.closest('[hidden]'))];const i=list.indexOf(document.activeElement);if(e.shiftKey&&i<=0){e.preventDefault();list.at(-1).focus();}else if(!e.shiftKey&&(i===list.length-1||i<0)){e.preventDefault();list[0].focus();}}
   },true);
   document.addEventListener('keyup',e=>keys.delete(e.code));window.addEventListener('blur',clearInput);document.addEventListener('visibilitychange',clearInput);
   window.addEventListener('languagechange',labels);
